@@ -3,6 +3,11 @@ module RubyBBCode
   # This class was made mostly just to keep track of all of the confusing the logic conditions that are checked.
   #
   class TagInfo
+    EMTPY_TAG = {
+      html_open: '',
+      html_close: '',
+    }.freeze
+
     def initialize(tag_info, dictionary)
       @tag_data = find_tag_info(tag_info, dictionary)
     end
@@ -98,7 +103,7 @@ module RubyBBCode
         ti[:closing_tag] = (tag_info[2] == '/')
         ti[:tag] = tag_info[3].to_sym.downcase
         ti[:params] = {}
-        @definition = dictionary[ti[:tag]]
+        @definition = dictionary[ti[:tag]] || EMTPY_TAG
         if tag_info[5][0] == ?= and can_have_quick_param?
           quick_param = tag_info[5][1..-1]
           # Get list of parameter values and add them as (regular) parameters
